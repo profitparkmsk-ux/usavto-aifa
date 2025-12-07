@@ -32,6 +32,17 @@ export type AuthorInfo = {
   sameAs?: string[];
 };
 
+const verification: Record<string, string> = {};
+  const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION?.trim();
+  const yandexVerification = process.env.NEXT_PUBLIC_YANDEX_VERIFICATION?.trim();
+
+  if (googleVerification && googleVerification.length > 0) {
+    verification.google = googleVerification;
+  }
+  if (yandexVerification && yandexVerification.length > 0) {
+    verification.yandex = yandexVerification;
+  }
+
 /**
  * Comments in English: Arguments for constructMetadata function
  */
@@ -287,6 +298,7 @@ export function constructMetadata({
       index: !noIndex && (appConfig.pageDefaults?.robotsIndex ?? true),
       follow: !noFollow && (appConfig.pageDefaults?.robotsFollow ?? true),
     },
+    ...(Object.keys(verification).length > 0 && { verification }),
   };
 
   return metadata;
